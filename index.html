@@ -7,9 +7,10 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="canvas"></div>
+    <!-- <div id="canvas"></div>
     <script>
-        canvas.onclick = (e)=>{
+        // canvas.onclick = (e)=>{
+        canvas.onmousemove = (e)=>{
             // console.log(e);  console.log调试大法
             console.log(e.clientX);
             console.log(e.clientY);
@@ -27,6 +28,39 @@
             // 让div出现在画板里
             canvas.appendChild(div)
         }
+    </script> -->
+    <canvas id="canvas" width="200" height="200"></canvas>
+    <script>
+        // 获取canvas,使canvas高宽和文档高宽一样
+        let canvas = document.getElementById("canvas");
+        canvas.width = document.documentElement.clientWidth;
+        canvas.height = document.documentElement.clientHeight;
+        // 画线
+        let ctx = canvas.getContext("2d");
+
+        let painting = false;
+        
+        ctx.fillStyle = "black"; 
+        ctx.strokeStyle = 'none';
+
+        canvas.onmousedown = () => {
+            painting = true;
+        }
+        canvas.onmousemove = (e) => {
+            if(painting === true) {
+                ctx.beginPath();
+                ctx.arc(e.clientX, e.clientY, 6, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.fill();
+            } else {
+                console.log('什么都不做');
+            }               
+        }
+
+        canvas.onmouseup = () => {
+            painting = false;
+        }
+
     </script>
 </body>
 </html>
