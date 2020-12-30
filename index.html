@@ -35,32 +35,42 @@
         let canvas = document.getElementById("canvas");
         canvas.width = document.documentElement.clientWidth;
         canvas.height = document.documentElement.clientHeight;
-        // 画线
         let ctx = canvas.getContext("2d");
 
-        let painting = false;
-        
         ctx.fillStyle = "black"; 
         ctx.strokeStyle = 'none';
 
-        canvas.onmousedown = () => {
-            painting = true;
-        }
-        canvas.onmousemove = (e) => {
-            if(painting === true) {
+        let painting = false;
+
+        var isTouchDevice = "ontouchstart" in document.documentElement;
+        // 画点
+        if(isTouchDevice) {
+            canvas.ontouchmove = (e) => {
+                let x = e.touches[0].clientX
+                let y = e.touches[0].clientY
                 ctx.beginPath();
-                ctx.arc(e.clientX, e.clientY, 6, 0, 2 * Math.PI);
-                ctx.stroke();
-                ctx.fill();
-            } else {
-                console.log('什么都不做');
-            }               
-        }
+                ctx.arc(x, y, 6, 0, 2 * Math.PI);
+                ctx.stroke();   // stroke是描边
+                ctx.fill();     // fill是填充
+            }
+        } else {
 
-        canvas.onmouseup = () => {
-            painting = false;
+            canvas.onmousedown = () => {
+                painting = true;
+            }
+            canvas.onmousemove = (e) => {
+                if(painting === true) {
+                    ctx.beginPath();
+                    ctx.arc(e.clientX, e.clientY, 6, 0, 2 * Math.PI);
+                    ctx.stroke();
+                    ctx.fill();
+                }       
+            }
+            canvas.onmouseup = () => {
+                painting = false;
+            }   
         }
-
+        
     </script>
 </body>
 </html>
